@@ -359,6 +359,7 @@ private:
     float leaf_velocity_expansion_;
     float leaf_accel_expansion_;
     bool force_rebuild_;
+    uint32_t rebuild_counter_;
 };
 
 }

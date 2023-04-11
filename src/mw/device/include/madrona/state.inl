@@ -1,5 +1,6 @@
 #pragma once
 
+#include <madrona/sync.hpp>
 #include <madrona/utils.hpp>
 
 namespace madrona {
@@ -354,6 +355,17 @@ SingletonT * StateManager::getSingletonColumn()
     
     Table &tbl = archetypes_[archetype_id]->tbl;
     return (SingletonT *)tbl.columns[2];
+}
+
+CountT StateManager::archetypeIncrementSortCounter(uint32_t archetype_id)
+{
+    return ++(archetypes_[archetype_id]->sortCounter);
+    // return archetypes_[archetype_id].sortCounter.fetch_add_relaxed(1);
+}
+
+void StateManager::archetypeResetSortCounter(uint32_t archetype_id)
+{
+  archetypes_[archetype_id]->sortCounter = 0;
 }
 
 bool StateManager::archetypeNeedsSort(uint32_t archetype_id) const

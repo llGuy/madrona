@@ -181,6 +181,9 @@ public:
     void recycleEntities(int32_t thread_offset,
                          int32_t recycle_base);
 
+    inline CountT archetypeIncrementSortCounter(uint32_t archetype_id);
+    inline void archetypeResetSortCounter(uint32_t archetype_id);
+
     inline bool archetypeNeedsSort(uint32_t archetype_id) const;
     inline void archetypeClearNeedsSort(uint32_t archetype_id);
 
@@ -228,6 +231,9 @@ private:
         Table tbl;
         ColumnMap columnLookup;
         bool needsSort;
+
+        // Experimenting with sorting frequency
+        CountT sortCounter;
     };
 
     uint32_t archetype_component_offset_ = 0;

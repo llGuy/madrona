@@ -957,6 +957,8 @@ SortArchetypeNodeBase::SortArchetypeNodeBase(uint32_t archetype_id,
        numPasses(num_passes)
 {}
 
+#define SORT_INTERVAL 1
+
 void SortArchetypeNodeBase::sortSetup(int32_t)
 {
     using namespace sortConsts;
@@ -965,7 +967,8 @@ void SortArchetypeNodeBase::sortSetup(int32_t)
     StateManager *state_mgr = mwGPU::getStateManager();
     int32_t num_columns = state_mgr->getArchetypeNumColumns(archetypeID);
 
-    if (!state_mgr->archetypeNeedsSort(archetypeID)) {
+    CountT archetypeSortCounter = state_mgr->archetypeIncrementSortCounter(archetypeID);
+    if (!state_mgr->archetypeNeedsSort(archetypeID) || archetypeSortCounter < SORT_INTERVAL) {
         numDynamicInvocations = 0;
 
         for (int i = 0; i < numPasses; i++) {
@@ -974,6 +977,7 @@ void SortArchetypeNodeBase::sortSetup(int32_t)
         return;
     }
     state_mgr->archetypeClearNeedsSort(archetypeID);
+    state_mgr->archetypeResetSortCounter(archetypeID);
 
     int num_rows = state_mgr->numArchetypeRows(archetypeID);
 

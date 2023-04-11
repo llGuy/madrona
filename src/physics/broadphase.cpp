@@ -27,7 +27,8 @@ BVH::BVH(CountT max_leaves,
       num_allocated_leaves_(max_leaves),
       leaf_velocity_expansion_(leaf_velocity_expansion),
       leaf_accel_expansion_(leaf_accel_expansion),
-      force_rebuild_(false)
+      force_rebuild_(false),
+      rebuild_counter_(0)
 {}
 
 CountT BVH::numInternalNodes(CountT num_leaves) const
